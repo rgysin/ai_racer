@@ -9,16 +9,25 @@ game_window = pyglet.window.Window(fullscreen=True)
 
 main_batch = pyglet.graphics.Batch()
 
+pyglet.gl.glLineWidth(2)
+
+
 player_car = None
 score = 0
 game_objects = []
 
-# Set up the two top labels
 score_text = "Score: "
 score_label = pyglet.text.Label(
-    text=score_text + str(score),
+    text=score_text + str(0),
     x=10,
     y=game_window.height-25,
+    batch=main_batch)
+
+target_speed_text = "Target Speed: "
+target_speed_label = pyglet.text.Label(
+    text=target_speed_text + str(0),
+    x=10,
+    y=game_window.height-50,
     batch=main_batch)
 
 counter = pyglet.clock.ClockDisplay()
@@ -62,6 +71,11 @@ def on_draw():
     main_batch.draw()
     counter.draw()
 
+    pyglet.graphics.draw(4, pyglet.gl.GL_LINES,
+        ("v2f", (0, 0, 0, 0, player_car.x, player_car.y,
+        player_car.x + 50 * math.cos(-math.radians(player_car.rotation + player_car.target_steering)),
+        player_car.y + 50 * math.sin(-math.radians(player_car.rotation + player_car.target_steering))))
+    )
 
 def update(dt):
     global score
@@ -71,6 +85,8 @@ def update(dt):
 
     score += dt;
     score_label.text = score_text + str(math.floor(score))
+    target_speed_label.text = \
+        target_speed_text + str(math.floor(player_car.target_speed))
 
 if __name__ == "__main__":
     # Start it up!
