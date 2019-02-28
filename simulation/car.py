@@ -1,6 +1,6 @@
 import pyglet, math
 from pyglet.window import key
-from . import physicalobject, resources
+from simulation import physicalobject, resources
 
 # Constants - TODO: Move these to either class privates or expose to user
 scaling_factor = 50.0 # Pixel to real world scaling
@@ -13,15 +13,9 @@ VEHICLE_ACCELERATION = 5 # Max acceleration in m/s^2
 VEHICLE_DECELERATION = 5 # Max deceleration in m/s^2
 L = 942.0 #Wheel base in mm
 
-class Player(physicalobject.PhysicalObject):
-    """Physical object that responds to user input"""
-
+class Car(physicalobject.PhysicalObject):
     def __init__(self, *args, **kwargs):
-        super(Player, self).__init__(img=resources.car_image, *args, **kwargs)
-
-        # Set some easy-to-tweak constants
-        self.thrust = 10
-        self.rotate_speed = STEPPER_SLEW
+        super(Car, self).__init__(img=resources.car_image, *args, **kwargs)
 
         # Vehicle params
         self.wheel_angle = 0
@@ -32,22 +26,11 @@ class Player(physicalobject.PhysicalObject):
         self.target_speed = 0
 
         # Tell the game handler about any event handlers
-        self.key_handler = key.KeyStateHandler()
-        self.event_handlers = [self, self.key_handler]
+        self.event_handlers = []
 
     def update(self, dt):
         # Do all the normal physics stuff
-        super(Player, self).update(dt)
-
-        if self.key_handler[key.LEFT]:
-            self.target_steering -= self.rotate_speed * dt
-        if self.key_handler[key.RIGHT]:
-            self.target_steering += self.rotate_speed * dt
-        if self.key_handler[key.UP]:
-            self.target_speed += self.thrust * dt;
-        if self.key_handler[key.DOWN]:
-            self.target_speed -= self.thrust * dt;
-
+        super(Car, self).update(dt)
         self.updateActuators(dt);
 
     def updateActuators(self, dt):
@@ -93,4 +76,4 @@ class Player(physicalobject.PhysicalObject):
         self.velocity_y = math.sin(angle_radians) * self.speed * scaling_factor
 
     def delete(self):
-        super(Player, self).delete()
+        super(Car, self).delete()

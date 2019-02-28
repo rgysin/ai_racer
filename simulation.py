@@ -1,30 +1,27 @@
+#!/usr/bin/env python
+
 import pyglet, random, math
-from game import load, player, resources
+from game import player
+from simulation import resources
 
 # Set up a window
 game_window = pyglet.window.Window(fullscreen=True)
 
 main_batch = pyglet.graphics.Batch()
 
-# Set up the two top labels
-score_label = pyglet.text.Label(
-    text="Score: 0", x=10, y=game_window.height-25, batch=main_batch)
-target_speed_label = pyglet.text.Label(
-    text="Target Speed: 0", x=10, y=game_window.height-50, batch=main_batch)
-speed_label = pyglet.text.Label(
-    text="Actual Speed: 0", x=10, y=game_window.height-75, batch=main_batch)
-steering_label = pyglet.text.Label(
-    text="Steering Angle: 0", x=10, y=game_window.height-100, batch=main_batch)
-wheel_angle_label = pyglet.text.Label(
-    text="Wheel Angle: 0", x=10, y=game_window.height-125, batch=main_batch)
-vehicle_angle_label = pyglet.text.Label(
-    text="Vehicle Angle: 0", x=10, y=game_window.height-150, batch=main_batch)
-
-counter = pyglet.clock.ClockDisplay()
-
 player_car = None
 score = 0
 game_objects = []
+
+# Set up the two top labels
+score_text = "Score: "
+score_label = pyglet.text.Label(
+    text=score_text + str(score),
+    x=10,
+    y=game_window.height-25,
+    batch=main_batch)
+
+counter = pyglet.clock.ClockDisplay()
 
 # We need to pop off as many event stack frames as we pushed on
 # every time we reset the level.
@@ -73,13 +70,7 @@ def update(dt):
         obj.update(dt)
 
     score += dt;
-    score_label.text = "Score: " + str(math.floor(score))
-    target_speed_label.text = "Target Speed: " + str(player_car.target_speed)
-    speed_label.text = "Actual Speed: " + str(player_car.speed)
-
-    steering_label.text="Steering Angle: " + str(player_car.steering)
-    wheel_angle_label.text="Wheel Angle: " + str(player_car.wheel_angle)
-    vehicle_angle_label.text="Vehicle Angle: " + str(player_car.rotation)
+    score_label.text = score_text + str(math.floor(score))
 
 if __name__ == "__main__":
     # Start it up!

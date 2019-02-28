@@ -43,3 +43,6 @@ class PhysicalObject(pyglet.sprite.Sprite):
             self.x = self.min_x
         if self.y > self.max_y:
             self.y = self.min_y
+
+    def delete(self):
+        super(PhysicalObject, self).delete()
