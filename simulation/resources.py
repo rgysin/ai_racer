@@ -11,3 +11,6 @@ pyglet.resource.reindex()
 
 car_image = pyglet.resource.image("yellow_car.png")
 center_image(car_image)
+
+cone_image = pyglet.resource.image("orange_circle.png")
+center_image(cone_image)

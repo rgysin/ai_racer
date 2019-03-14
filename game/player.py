@@ -28,6 +28,3 @@ class Player(car.Car):
             self.target_speed += self.thrust * dt;
         if self.key_handler[key.DOWN]:
             self.target_speed -= self.thrust * dt;
-
-    def delete(self):
-        super(Player, self).delete()

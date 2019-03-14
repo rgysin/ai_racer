@@ -19,6 +19,9 @@ class Car(physicalobject.PhysicalObject):
     def __init__(self, *args, **kwargs):
         super(Car, self).__init__(img=resources.car_image, *args, **kwargs)
 
+        # Initial Position
+        self.initial_position = [ kwargs['x'], kwargs['y'] ]
+
         # Vehicle params
         self.wheel_angle = 0
         self.steering = 0
@@ -89,5 +92,18 @@ class Car(physicalobject.PhysicalObject):
         self.velocity_y = math.sin(angle_radians) * \
             math.floor(self.speed) * scaling_factor
 
-    def delete(self):
-        super(Car, self).delete()
+    def reset(self):
+        self.x = self.initial_position[0]
+        self.y = self.initial_position[1]
+
+        self.wheel_angle = 0
+        self.steering = 0
+        self.speed = 0;
+
+        self.target_steering = 0
+        self.target_speed = 0
+
+        self.velocity_x = 0
+        self.velocity_y = 0
+
+        self.rotation = 0
